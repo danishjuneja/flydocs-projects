@@ -11,7 +11,7 @@ import (
 func main() {
 	n := maelstrom.NewNode()
 	var mu sync.Mutex
-	seen := make(map[int]struct{})
+	seen := make(map[int]bool)
 
 	// Register challenge handlers here with n.Handle(...)
 	n.Handle("broadcast", func(msg maelstrom.Message) error {
@@ -22,7 +22,7 @@ func main() {
 			return err
 		}
 		mu.Lock()
-		seen[body.Message] = struct{}{}
+		seen[body.Message] = true
 		mu.Unlock()
 
 		return n.Reply(msg, map[string]any{
